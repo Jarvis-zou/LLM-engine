@@ -15,3 +15,8 @@ target_include_directories(cal_padding_offset_test PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(cal_padding_offset_test ${CUDA_LIBRARIES} cal_padding_offset)
 target_include_directories(cal_padding_offset_test PRIVATE ${CUDA_INCLUDE_DIRS})
 
+add_executable(rmsnorm_test rmsnorm_test.cu)
+target_include_directories(rmsnorm_test PRIVATE ${CMAKE_SOURCE_DIR})
+target_link_libraries(rmsnorm_test ${CUDA_LIBRARIES} rmsnorm)
+target_include_directories(rmsnorm_test PRIVATE ${CUDA_INCLUDE_DIRS})
+
