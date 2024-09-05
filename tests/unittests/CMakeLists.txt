@@ -20,3 +20,7 @@ target_include_directories(rmsnorm_test PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(rmsnorm_test ${CUDA_LIBRARIES} rmsnorm)
 target_include_directories(rmsnorm_test PRIVATE ${CUDA_INCLUDE_DIRS})
 
+add_executable(build_causal_mask_test build_causal_mask_test.cu)
+target_include_directories(build_causal_mask_test PRIVATE ${CMAKE_SOURCE_DIR})
+target_link_libraries(build_causal_mask_test ${CUDA_LIBRARIES} build_causal_mask)
+target_include_directories(build_causal_mask_test PRIVATE ${CUDA_INCLUDE_DIRS})
