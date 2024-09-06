@@ -21,3 +21,17 @@ set_property(TARGET build_causal_mask PROPERTY CUDA_SEPARABLE_COMPILATION   ON)
 set_property(TARGET build_causal_mask PROPERTY POSITION_INDEPENDENT_CODE  ON)
 set_property(TARGET build_causal_mask PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS  ON)
 target_include_directories(build_causal_mask PRIVATE ${CMAKE_SOURCE_DIR})
+
+add_library(cublasWrapper STATIC cublas_utils.cu)
+set_property(TARGET cublasWrapper PROPERTY CUDA_SEPARABLE_COMPILATION   ON)
+set_property(TARGET cublasWrapper PROPERTY POSITION_INDEPENDENT_CODE  ON)
+set_property(TARGET cublasWrapper PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS  ON)
+target_include_directories(cublasWrapper PRIVATE ${CMAKE_SOURCE_DIR})
+
+add_library(linear STATIC linear.cu)
+set_property(TARGET linear PROPERTY CUDA_SEPARABLE_COMPILATION   ON)
+set_property(TARGET linear PROPERTY POSITION_INDEPENDENT_CODE  ON)
+set_property(TARGET linear PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS  ON)
+target_link_libraries(linear PUBLIC -lcudart -lcublas cublasWrapper)
+target_include_directories(linear PRIVATE ${CMAKE_SOURCE_DIR})
+
