@@ -32,6 +32,7 @@ add_library(linear STATIC linear.cu)
 set_property(TARGET linear PROPERTY CUDA_SEPARABLE_COMPILATION   ON)
 set_property(TARGET linear PROPERTY POSITION_INDEPENDENT_CODE  ON)
 set_property(TARGET linear PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS  ON)
-target_link_libraries(linear PUBLIC -lcudart -lcublas cublasWrapper)
 target_include_directories(linear PRIVATE ${CMAKE_SOURCE_DIR})
+target_link_libraries(linear PUBLIC cudart cublas cublaslt cublasWrapper)
+
 

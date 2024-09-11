@@ -5,8 +5,8 @@ void launchLinearGemm(TensorWrapper<T>* input,
                       BaseWeight<T>*    weight,
                       TensorWrapper<T>* res,
                       cublasWrapper*    cublas_wrapper,
-                      bool              transa = false,
-                      bool              transb = false)
+                      bool              transa,
+                      bool              transb)
 {   
     // In cublas, all matrices A, B and C are col-major, y = x * w -> y^T = w^T * x^T = weight^T * input^T
     const int Am = weight->shape[1];
@@ -20,8 +20,10 @@ void launchLinearGemm(TensorWrapper<T>* input,
     const int ldb = Bk;
     const int ldc = Cm;
 
-    const float *alpha = 1.0f;
-    const float *beta  = 0.0f;
+    float alpha_val = 1.0f;
+    float beta_val = 0.0f;
+    const float* alpha = &alpha_val;
+    const float* beta = &beta_val;
 
     if (!transa && !transb) {
         LLM_CHECK_WITH_INFO(Ak == Bk, 
@@ -56,8 +58,8 @@ void launchLinearGemmStridedBatched(TensorWrapper<T>* input1,
                                     TensorWrapper<T>* input2,
                                     TensorWrapper<T>* res,
                                     cublasWrapper*    cublas_wrapper,
-                                    bool              transa = false,
-                                    bool              transb = false)
+                                    bool              transa,
+                                    bool              transb)
 {
     const int Am = input2->shape[2];
     const int Ak = input2->shape[3];
@@ -69,9 +71,11 @@ void launchLinearGemmStridedBatched(TensorWrapper<T>* input1,
     const int lda = Ak;
     const int ldb = Bn;
     const int ldc = Cn;
-    
-    const float *alpha = 1.0f;
-    const float *beta  = 0.0f;
+
+    float alpha_val = 1.0f;
+    float beta_val = 0.0f;
+    const float* alpha = &alpha_val;
+    const float* beta = &beta_val;
 
     const int64_t strideA = Am * Ak;
     const int64_t strideB = Bk * Bn;
@@ -111,3 +115,31 @@ void launchLinearGemmStridedBatched(TensorWrapper<T>* input1,
                                        batchCount);
 
 }
+
+template void launchLinearGemm(TensorWrapper<float>* input,
+                               BaseWeight<float>*    weight,
+                               TensorWrapper<float>* res,
+                               cublasWrapper*        cublas_wrapper,
+                               bool                  transa,
+                               bool                  transb);
+
+template void launchLinearGemm(TensorWrapper<half>* input,
+                               BaseWeight<half>*    weight,
+                               TensorWrapper<half>* res,
+                               cublasWrapper*       cublas_wrapper,
+                               bool                 transa,
+                               bool                 transb);
+
+template void launchLinearGemmStridedBatched(TensorWrapper<float>* input1,
+                                             TensorWrapper<float>* input2,
+                                             TensorWrapper<float>* res,
+                                             cublasWrapper*        cublas_wrapper,
+                                             bool                  transa,
+                                             bool                  transb);
+
+template void launchLinearGemmStridedBatched(TensorWrapper<half>* input1,
+                                             TensorWrapper<half>* input2,
+                                             TensorWrapper<half>* res,
+                                             cublasWrapper*       cublas_wrapper,
+                                             bool                 transa,
+                                             bool                 transb);

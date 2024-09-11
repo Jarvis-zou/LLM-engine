@@ -1,5 +1,3 @@
-find_package(CUDA REQUIRED)
-
 add_executable(tensor_tests tensor_test.cpp)
 target_include_directories(tensor_tests PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(tensor_tests ${CUDA_LIBRARIES})
@@ -24,3 +22,9 @@ add_executable(build_causal_mask_test build_causal_mask_test.cu)
 target_include_directories(build_causal_mask_test PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(build_causal_mask_test ${CUDA_LIBRARIES} build_causal_mask)
 target_include_directories(build_causal_mask_test PRIVATE ${CUDA_INCLUDE_DIRS})
+
+add_executable(linear_test linear_test.cu)
+target_include_directories(linear_test PRIVATE ${CMAKE_SOURCE_DIR})
+target_link_libraries(linear_test ${CUDA_LIBRARIES} linear)
+target_include_directories(linear_test PRIVATE ${CUDA_INCLUDE_DIRS})
+
