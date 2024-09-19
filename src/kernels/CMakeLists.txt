@@ -35,4 +35,10 @@ set_property(TARGET linear PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS  ON)
 target_include_directories(linear PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(linear PUBLIC cudart cublas cublaslt cublasWrapper)
 
+add_library(qkv_bias_rope STATIC qkv_bias_rope.cu)
+set_property(TARGET qkv_bias_rope PROPERTY CUDA_SEPARABLE_COMPILATION   ON)
+set_property(TARGET qkv_bias_rope PROPERTY POSITION_INDEPENDENT_CODE  ON)
+set_property(TARGET qkv_bias_rope PROPERTY CUDA_RESOLVE_DEVICE_SYMBOLS  ON)
+target_include_directories(qkv_bias_rope PRIVATE ${CMAKE_SOURCE_DIR})
+
 

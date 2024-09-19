@@ -28,3 +28,8 @@ target_include_directories(linear_test PRIVATE ${CMAKE_SOURCE_DIR})
 target_link_libraries(linear_test ${CUDA_LIBRARIES} linear)
 target_include_directories(linear_test PRIVATE ${CUDA_INCLUDE_DIRS})
 
+add_executable(qkv_bias_rope_test qkv_bias_rope_test.cu)
+target_include_directories(qkv_bias_rope_test PRIVATE ${CMAKE_SOURCE_DIR})
+target_link_libraries(qkv_bias_rope_test ${CUDA_LIBRARIES} qkv_bias_rope)
+target_include_directories(qkv_bias_rope_test PRIVATE ${CUDA_INCLUDE_DIRS})
+
