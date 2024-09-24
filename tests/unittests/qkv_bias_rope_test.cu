@@ -71,6 +71,7 @@ int main() {
     auto* q_buf = new TensorWrapper<float>(Device::GPU, TensorType::FP32, {batch_size, num_heads_q, max_seq_len, head_dim}, d_q);
     auto* k_buf = new TensorWrapper<float>(Device::GPU, TensorType::FP32, {batch_size, num_heads_kv, max_seq_len, head_dim}, d_k);
     auto* v_buf = new TensorWrapper<float>(Device::GPU, TensorType::FP32, {batch_size, num_heads_kv, max_seq_len, head_dim}, d_v);
+    auto* QKV_buf = new TensorWrapper<float>(Device::GPU, TensorType::FP32, {num_tokens, num_heads_q + 2 * num_heads_kv, head_dim}, d_QKV);
 
     LLaMAAttentionWeights<float> att_weights;
     att_weights.qkv.bias = d_qkv_bias;
@@ -83,6 +84,17 @@ int main() {
     att_params.inv_freq = inv_freq;
     att_params.max_position_embeddings = max_position_embedding;
     att_params.use_dynamic_ntk = false;
+
+    // launch kernel
+    launchAddFusedQKVBiasTransposeAndRoPE(q_buf,
+                                          k_buf,
+                                          v_buf,
+                                          QKV_buf,
+                                          att_weights.qkv,
+                                          padding_offset_buf,
+                                          history_len_buf,
+                                          input_seq_len_buf,
+                                          att_params);
 
 }
 
